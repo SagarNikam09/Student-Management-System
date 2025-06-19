@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-success {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #e5e7eb;
+        }
+
+        .avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #e5e7eb;
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-4 {
+            gap: 16px;
+        }
+
+        .gap-2 {
+            gap: 8px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-sm {
+            font-size: 14px;
+        }
+
+        .text-lg {
+            font-size: 18px;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .text-gray-600 {
+            color: #6b7280;
+        }
+
+        .text-gray-800 {
+            color: #1f2937;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+
+        .mb-6 {
+            margin-bottom: 24px;
+        }
+
+        .mt-4 {
+            margin-top: 16px;
+        }
+
+        .p-4 {
+            padding: 16px;
+        }
+
+        .rounded-lg {
+            border-radius: 8px;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .hover-shadow-md:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .transition {
+            transition: all 0.2s ease;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 12px;
+            color: #374151;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        main {
+            padding: 24px 0;
+        }
+
+        @media (max-width: 768px) {
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 16px;
+            }
+            
+            .modal {
+                width: 95%;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <div class="container">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <i data-feather="users" style="color: #3b82f6; width: 32px; height: 32px;"></i>
+                            <h1 class="text-2xl font-bold text-gray-800">Student Dashboard</h1>
+                        </div>
+                        <div class="text-sm text-gray-600" id="student-count">
+                            0 students enrolled
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="search-bar">
+                            <i data-feather="search" class="search-icon" style="width: 20px; height: 20px;"></i>
+                            <input
+                                type="text"
+                                placeholder="Search students..."
+                                id="search-input"
+                                class="search-input"
+                            >
+                        </div>
+                        <button
+                            onclick="showAddForm()"
+                            class="btn btn-primary flex items-center gap-2"
+                        >
+                            <i data-feather="plus" style="width: 16px; height: 16px;"></i>
+                            Add Student
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <main class="container">
+            <div id="student-list" class="grid grid-3">
+                <!-- Students will be rendered here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Student Modal -->
+    <div id="student-form-modal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-semibold text-gray-800" id="form-title">Add New Student</h2>
+                <button onclick="hideForm()" class="text-gray-400 hover:text-gray-600 transition">
+                    <i data-feather="x" style="width: 24px; height: 24px;"></i>
+                </button>
+            </div>
+
+            <form id="student-form" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label flex items-center gap-2">
+                        <i data-feather="user" style="width: 16px; height: 16px;"></i>
+                        Full Name
+                    </label>
+                    <input
+                        type="text"
+                        name="name"
+                        id="name-input"
+                        class="form-input"
+                        placeholder="Enter student's full name"
+                        required
+                    >
+                    <div id="name-error" class="error hidden"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label flex items-center gap-2">
+                        <i data-feather="mail" style="width: 16px; height: 16px;"></i>
+                        Email Address
+                    </label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email-input"
+                        class="form-input"
+                        placeholder="Enter student's email address"
+                        required
+                    >
+                    <div id="email-error" class="error hidden"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label flex items-center gap-2">
+                        <i data-feather="book" style="width: 16px; height: 16px;"></i>
+                        Enrolled Course
+                    </label>
+                    <select name="course" id="course-input" class="form-input" required>
+                        <option value="">Select a course</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Biology">Biology</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Business Administration">Business Administration</option>
+                        <option value="Economics">Economics</option>
+                        <option value="Psychology">Psychology</option>
+                        <option value="Literature">Literature</option>
+                        <option value="History">History</option>
+                    </select>
+                    <div id="course-error" class="error hidden"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label flex items-center gap-2">
+                        <i data-feather="image" style="width: 16px; height: 16px;"></i>
+                        Profile Image URL
+                    </label>
+                    <input
+                        type="url"
+                        name="image"
+                        id="image-input"
+                        class="form-input"
+                        placeholder="Enter profile image URL"
+                        required
+                    >
+                    <div id="image-error" class="error hidden"></div>
+                    <div id="image-preview" class="mt-2 hidden">
+                        <img id="preview-img" class="w-16 h-16 rounded-full object-cover border" style="width: 64px; height: 64px;">
+                    </div>
+                </div>
+
+                <div class="flex gap-3 mt-6">
+                    <button type="submit" class="btn btn-primary flex-1" id="submit-btn">
+                        Add Student
+                    </button>
+                    <button type="button" onclick="hideForm()" class="btn btn-secondary flex-1">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Student Detail Modal -->
+    <div id="student-detail-modal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-semibold text-gray-800">Student Details</h2>
+                <button onclick="hideDetail()" class="text-gray-400 hover:text-gray-600 transition">
+                    <i data-feather="x" style="width: 24px; height: 24px;"></i>
+                </button>
+            </div>
+
+            <div id="detail-content">
+                <!-- Student details will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // Student Management App
+        class StudentManager {
+            constructor() {
+                this.students = this.loadStudents();
+                this.editingStudent = null;
+                this.selectedStudent = null;
+                this.init();
+            }
+
+            init() {
+                this.renderStudents();
+                this.updateStudentCount();
+                this.setupEventListeners();
+            }
+
+            loadStudents() {
+                const saved = localStorage.getItem('students');
+                if (saved) {
+                    return JSON.parse(saved);
+                }
+                // Sample data
+                return [
+                    {
+                        id: this.generateId(),
+                        name: 'John Doe',
+                        email: 'john.doe@example.com',
+                        course: 'Computer Science',
+                        image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'
+                    },
+                    {
+                        id: this.generateId(),
+                        name: 'Jane Smith',
+                        email: 'jane.smith@example.com',
+                        course: 'Mathematics',
+                        image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face'
+                    },
+                    {
+                        id: this.generateId(),
+                        name: 'Mike Johnson',
+                        email: 'mike.johnson@example.com',
+                        course: 'Physics',
+                        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face'
+                    }
+                ];
+            }
+
+            saveStudents() {
+                localStorage.setItem('students', JSON.stringify(this.students));
+            }
+
+            generateId() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            }
+
+            addStudent(studentData) {
+                const newStudent = {
+                    id: this.generateId(),
+                    ...studentData
+                };
+                this.students.push(newStudent);
+                this.saveStudents();
+                this.renderStudents();
+                this.updateStudentCount();
+            }
+
+            updateStudent(studentData) {
+                const index = this.students.findIndex(s => s.id === studentData.id);
+                if (index !== -1) {
+                    this.students[index] = { ...studentData };
+                    this.saveStudents();
+                    this.renderStudents();
+                }
+            }
+
+            deleteStudent(studentId) {
+                this.students = this.students.filter(s => s.id !== studentId);
+                this.saveStudents();
+                this.renderStudents();
+                this.updateStudentCount();
+            }
+
+            getStudentById(studentId) {
+                return this.students.find(s => s.id === studentId);
+            }
+
+            searchStudents(searchTerm) {
+                if (!searchTerm) return this.students;
+                const term = searchTerm.toLowerCase();
+                return this.students.filter(student =>
+                    student.name.toLowerCase().includes(term) ||
+                    student.email.toLowerCase().includes(term) ||
+                    student.course.toLowerCase().includes(term)
+                );
+            }
+
+            renderStudents(filteredStudents = null) {
+                const studentsToRender = filteredStudents || this.students;
+                const container = document.getElementById('student-list');
+                
+                if (studentsToRender.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <h3>No students found</h3>
+                            <p>Try adjusting your search or add a new student to get started.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = studentsToRender.map(student => `
+                    <div class="card hover-shadow-md transition">
+                        <div class="flex items-center gap-4 mb-4">
+                            <img
+                                src="${student.image}"
+                                alt="${student.name}"
+                                class="avatar"
+                                onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face'"
+                            >
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 mb-1">${student.name}</h3>
+                                <div class="flex items-center gap-2 text-sm text-gray-600 mb-1">
+                                    <i data-feather="mail" style="width: 14px; height: 14px;"></i>
+                                    ${student.email}
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-gray-600">
+                                    <i data-feather="book" style="width: 14px; height: 14px;"></i>
+                                    ${student.course}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <button
+                                onclick="studentManager.viewStudent('${student.id}')"
+                                class="btn btn-secondary flex-1 flex items-center justify-center gap-2"
+                            >
+                                <i data-feather="eye" style="width: 14px; height: 14px;"></i>
+                                View
+                            </button>
+                            <button
+                                onclick="studentManager.editStudent('${student.id}')"
+                                class="btn btn-primary flex items-center justify-center gap-2"
+                                style="min-width: 44px;"
+                            >
+                                <i data-feather="edit" style="width: 14px; height: 14px;"></i>
+                            </button>
+                            <button
+                                onclick="studentManager.deleteStudent('${student.id}')"
+                                class="btn btn-danger flex items-center justify-center gap-2"
+                                style="min-width: 44px;"
+                            >
+                                <i data-feather="trash-2" style="width: 14px; height: 14px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                feather.replace();
+            }
+
+            updateStudentCount() {
+                const countElement = document.getElementById('student-count');
+                countElement.textContent = `${this.students.length} student${this.students.length !== 1 ? 's' : ''} enrolled`;
+            }
+
+            setupEventListeners() {
+                // Search functionality
+                document.getElementById('search-input').addEventListener('input', (e) => {
+                    const searchTerm = e.target.value;
+                    const filteredStudents = this.searchStudents(searchTerm);
+                    this.renderStudents(filteredStudents);
+                });
+
+                // Image preview
+                document.getElementById('image-input').addEventListener('input', (e) => {
+                    const url = e.target.value;
+                    const preview = document.getElementById('image-preview');
+                    const previewImg = document.getElementById('preview-img');
+                    
+                    if (url) {
+                        previewImg.src = url;
+                        preview.classList.remove('hidden');
+                        previewImg.onerror = () => preview.classList.add('hidden');
+                    } else {
+                        preview.classList.add('hidden');
+                    }
+                });
+            }
+
+            showAddForm() {
+                this.editingStudent = null;
+                document.getElementById('form-title').textContent = 'Add New Student';
+                document.getElementById('submit-btn').textContent = 'Add Student';
+                document.getElementById('student-form').reset();
+                document.getElementById('image-preview').classList.add('hidden');
+                document.getElementById('student-form-modal').classList.remove('hidden');
+            }
+
+            editStudent(studentId) {
+                const student = this.getStudentById(studentId);
+                if (student) {
+                    this.editingStudent = student;
+                    document.getElementById('form-title').textContent = 'Edit Student';
+                    document.getElementById('submit-btn').textContent = 'Update Student';
+                    
+                    document.getElementById('name-input').value = student.name;
+                    document.getElementById('email-input').value = student.email;
+                    document.getElementById('course-input').value = student.course;
+                    document.getElementById('image-input').value = student.image;
+                    
+                    // Show image preview
+                    const preview = document.getElementById('image-preview');
+                    const previewImg = document.getElementById('preview-img');
+                    if (student.image) {
+                        previewImg.src = student.image;
+                        preview.classList.remove('hidden');
+                    }
+                    
+                    document.getElementById('student-form-modal').classList.remove('hidden');
+                }
+            }
+
+            viewStudent(studentId) {
+                const student = this.getStudentById(studentId);
+                if (student) {
+                    this.selectedStudent = student;
+                    const detailContent = document.getElementById('detail-content');
+                    
+                    detailContent.innerHTML = `
+                        <div class="text-center mb-6">
+                            <img
+                                src="${student.image}"
+                                alt="${student.name}"
+                                class="avatar-large mx-auto mb-4"
+                                onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face'"
+                            >
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">${student.name}</h3>
+                        </div>
+
+                        <div class="space-y-4 mb-6">
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                                <i data-feather="mail" style="width: 20px; height: 20px; color: #6b7280;"></i>
+                                <div>
+                                    <p class="text-sm text-gray-600">Email Address</p>
+                                    <p class="font-medium text-gray-800">${student.email}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                                <i data-feather="book" style="width: 20px; height: 20px; color: #6b7280;"></i>
+                                <div>
+                                    <p class="text-sm text-gray-600">Enrolled Course</p>
+                                    <p class="font-medium text-gray-800">${student.course}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <button
+                                onclick="studentManager.editStudent('${student.id}'); hideDetail();"
+                                class="btn btn-primary flex-1 flex items-center justify-center gap-2"
+                            >
+                                <i data-feather="edit" style="width: 16px; height: 16px;"></i>
+                                Edit Student
+                            </button>
+                            <button
+                                onclick="studentManager.deleteStudent('${student.id}'); hideDetail();"
+                                class="btn btn-danger flex items-center justify-center gap-2"
+                                style="min-width: 44px;"
+                            >
+                                <i data-feather="trash-2" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    feather.replace();
+                    document.getElementById('student-detail-modal').classList.remove('hidden');
+                }
+            }
+
+            handleFormSubmit(event) {
+                event.preventDefault();
+                
+                const formData = new FormData(event.target);
+                const studentData = {
+                    name: formData.get('name').trim(),
+                    email: formData.get('email').trim(),
+                    course: formData.get('course'),
+                    image: formData.get('image').trim()
+                };
+
+                // Validation
+                let hasErrors = false;
+                
+                if (!studentData.name) {
+                    this.showError('name-error', 'Name is required');
+                    hasErrors = true;
+                } else {
+                    this.hideError('name-error');
+                }
+
+                if (!studentData.email) {
+                    this.showError('email-error', 'Email is required');
+                    hasErrors = true;
+                } else if (!/\S+@\S+\.\S+/.test(studentData.email)) {
+                    this.showError('email-error', 'Email is invalid');
+                    hasErrors = true;
+                } else {
+                    this.hideError('email-error');
+                }
+
+                if (!studentData.course) {
+                    this.showError('course-error', 'Course is required');
+                    hasErrors = true;
+                } else {
+                    this.hideError('course-error');
+                }
+
+                if (!studentData.image) {
+                    this.showError('image-error', 'Profile image URL is required');
+                    hasErrors = true;
+                } else {
+                    this.hideError('image-error');
+                }
+
+                if (hasErrors) return;
+
+                if (this.editingStudent) {
+                    studentData.id = this.editingStudent.id;
+                    this.updateStudent(studentData);
+                } else {
+                    this.addStudent(studentData);
+                }
+
+                this.hideForm();
+            }
+
+            showError(elementId, message) {
+                const errorElement = document.getElementById(elementId);
+                errorElement.textContent = message;
+                errorElement.classList.remove('hidden');
+            }
+
+            hideError(elementId) {
+                const errorElement = document.getElementById(elementId);
+                errorElement.classList.add('hidden');
+            }
+        }
+
+        // Global functions for HTML onclick handlers
+        function showAddForm() {
+            studentManager.showAddForm();
+        }
+
+        function hideForm() {
+            document.getElementById('student-form-modal').classList.add('hidden');
+            studentManager.editingStudent = null;
+        }
+
+        function hideDetail() {
+            document.getElementById('student-detail-modal').classList.add('hidden');
+            studentManager.selectedStudent = null;
+        }
+
+        function handleFormSubmit(event) {
+            studentManager.handleFormSubmit(event);
+        }
+
+        // Initialize the app
+        const studentManager = new StudentManager();
+    </script>
+</body>
+</html> 
