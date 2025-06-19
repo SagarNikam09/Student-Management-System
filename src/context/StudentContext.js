@@ -239,28 +239,28 @@ export const StudentProvider = ({ children }) => {
           const sampleStudents = [
             {
               id: 'sample_1',
-              name: 'John Doe',
-              email: 'john.doe@example.com',
+              name: 'Sagar Nikam',
+              email: 'Sagar@Xmail.com',
               course: 'Computer Science',
-              image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+              image: 'https://yt3.googleusercontent.com/ytc/AIdro_ns_yV7aPptSgPJlpvUm4Jvv-1ZHMgArIk7JEByl5jwN1A=s160-c-k-c0x00ffffff-no-rj',
               createdAt: new Date().toISOString(),
               status: 'active'
             },
             {
               id: 'sample_2',
-              name: 'Jane Smith',
-              email: 'jane.smith@example.com',
-              course: 'Mathematics',
-              image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
+              name: 'Elon Musk',
+              email: 'elonmusk@Xmail.com',
+              course: 'Project Management',
+              image: 'https://freight.cargo.site/t/original/i/6e90ef32471e05d8bfd029d6d5877119439b23c2989a55cf182b99c54303f4fa/MS_Musk_Elon_CloseUp.jpg',
               createdAt: new Date().toISOString(),
               status: 'active'
             },
             {
               id: 'sample_3',
-              name: 'Mike Johnson',
-              email: 'mike.johnson@example.com',
-              course: 'Physics',
-              image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+              name: 'Virat Kohli',
+              email: 'virat@example.com',
+              course: 'JavaScript pro',
+              image: 'https://www.hindustantimes.com/static-content/1y/cricket-logos/players/virat-kohli.png',
               createdAt: new Date().toISOString(),
               status: 'active'
             }
