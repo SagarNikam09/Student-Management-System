@@ -205,27 +205,6 @@ Both versions work on all modern browsers:
 
 ## 📊 Sample Data
 
-The application comes with three sample students to help you get started:
-- John Doe (HTML Basics)
-- Jane Smith (CSS Mastery)
-- Mike Johnson (JavaScript Pro)
+The application comes with three sample students to help you get started.
 
 You can modify or delete these sample records as needed.
-
-## 🤝 Contributing
-
-Feel free to contribute to this project by:
-- Reporting bugs
-- Suggesting new features
-- Submitting pull requests
-- Improving documentation
-
-## 🎓 Educational Value
-
-This project serves as an excellent learning resource for:
-- **React Developers**: Advanced patterns and best practices
-- **JavaScript Developers**: Modern async patterns and event loop understanding
-- **Students**: Real-world application of programming concepts
-- **Mentors**: Teaching material for React and JavaScript concepts
-
-The code is well-commented and includes explanations for key concepts, making it perfect for educational purposes. 
